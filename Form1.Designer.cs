@@ -56,7 +56,7 @@ namespace PabloMoraPlanilla
             this.txtañoIngreso = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnConsultar = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.lsvContenido = new System.Windows.Forms.ListView();
@@ -345,15 +345,16 @@ namespace PabloMoraPlanilla
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btnConsultar
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(249, 384);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 35);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Consultar";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnConsultar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConsultar.Location = new System.Drawing.Point(249, 384);
+            this.btnConsultar.Name = "btnConsultar";
+            this.btnConsultar.Size = new System.Drawing.Size(100, 35);
+            this.btnConsultar.TabIndex = 6;
+            this.btnConsultar.Text = "Consultar";
+            this.btnConsultar.UseVisualStyleBackColor = true;
+            this.btnConsultar.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -445,7 +446,7 @@ namespace PabloMoraPlanilla
             this.Controls.Add(this.lsvContenido);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnConsultar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -473,7 +474,7 @@ namespace PabloMoraPlanilla
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnConsultar;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox txtSegundoA;

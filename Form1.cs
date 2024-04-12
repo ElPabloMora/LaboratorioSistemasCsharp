@@ -112,7 +112,7 @@ namespace PabloMoraPlanilla
 
                         // Por aqui 
                         escribir.WriteLine(txtcedula.Text + "," + txtnombre.Text + "," + txtPrimerA.Text + "," +
-                             txtSegundoA.Text + "," + txtHorasExtraordinarias.Text + "," + txtHorasOrdinarias.Text + "," +
+                             txtSegundoA.Text + "," + txtHorasOrdinarias.Text + "," + txtHorasExtraordinarias.Text + "," +
                             txtSalarioxHoras.Text + "," + txtsi.Text + "," + txtNo.Text + "," + txtañoIngreso.Text);
                         escribir.Close();
 
@@ -121,9 +121,41 @@ namespace PabloMoraPlanilla
 
                         string empleado = (txtnombre.Text + " " + txtPrimerA.Text + " " + txtSegundoA.Text);
 
-                        string salarioBruto = Convert.ToString((int.Parse(txtHorasOrdinarias.Text) * int.Parse(txtSalarioxHoras.Text)) + (int.Parse(txtHorasExtraordinarias.Text) * (int.Parse(txtSalarioxHoras.Text)*2))); 
+                        string salarioBruto = Convert.ToString(((int.Parse(txtHorasOrdinarias.Text)*4.35) * int.Parse(txtSalarioxHoras.Text)) + ((int.Parse(txtHorasExtraordinarias.Text)*4.35) * (int.Parse(txtSalarioxHoras.Text)*2)));
 
-                        escribir2.WriteLine(txtcedula.Text + "," + empleado + "," + salarioBruto + ",");
+                        string impuestoDeVentas = Convert.ToString((double.Parse(salarioBruto) * 0.13));
+
+                        string bono;
+
+                        int años = (2024 - int.Parse(txtañoIngreso.Text));
+
+                        if (txtsi.Text == "X")
+                        {
+                            if (9 > años && años > 2 )
+                            {
+                                bono = "1500";
+                            }
+                            else if (19 > años && años > 10)
+                            {
+                                bono = "11000";
+                            }
+                            else if ( años > 20)
+                            {
+                                bono = "60000";
+                            }
+                            else
+                            {
+                                bono = "500";
+                            }
+                        }
+                        else
+                        {
+                            bono = "0";
+                        }
+
+                        string salarioneto = Convert.ToString((int.Parse(salarioBruto) + int.Parse(bono) - (double.Parse(salarioBruto) * 0.13)));
+
+                        escribir2.WriteLine(txtcedula.Text + "," + empleado + "," + salarioBruto + "," + impuestoDeVentas + "," + salarioneto + "," + bono);
 
                         escribir2.Close();
 
@@ -323,6 +355,82 @@ namespace PabloMoraPlanilla
             validar_Letra(e);
         }
 
-       
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (txtcedula.Text != "")
+            { 
+                consultar(); 
+            }
+            else
+            {
+                txtcedula.Focus();
+                MessageBox.Show("Debe de ingresar una cedula para poder consultar un empleado  " + "Verifique...." );
+
+            }
+        }
+
+        public void consultar()
+        {
+            archivo = "nominaElZAfiro.txt";
+
+            StreamReader lectura;
+
+            string cadena;
+            string cedula = txtcedula.Text;
+            bool encontrado;
+            encontrado = false;
+            string[] campos = new string[10];
+            char[] separador = { ',' };
+
+            try
+            {
+                lectura = File.OpenText(ruta + archivo);
+                cadena = lectura.ReadLine();
+                while (cadena != null && encontrado == false)
+                {
+                    campos = cadena.Split(separador);
+
+                    if (campos[0].Trim().Equals(cedula))
+                    {
+                        lsvContenido.Clear();
+                        lsvContenido.Columns.Add("Cedula").Width = 60;
+                        lsvContenido.Columns.Add("Nombre").Width = 60;
+                        lsvContenido.Columns.Add("Primer Apellido").Width = 90;
+                        lsvContenido.Columns.Add("Segundo Apellido").Width = 107;
+                        lsvContenido.Columns.Add("Horas Ordinarias").Width = 99;
+                        lsvContenido.Columns.Add("Horas Extraordinarias").Width = 140;
+                        lsvContenido.Columns.Add("Salario Por Hora").Width = 91;
+                        lsvContenido.Columns.Add("Bono").Width = 60;
+
+                        lsvContenido.Items.Add(cedula);
+                        lsvContenido.Items[lsvContenido.Items.Count - 1].SubItems.Add(campos[1]);
+                        lsvContenido.Items[lsvContenido.Items.Count - 1].SubItems.Add(campos[2]);
+                        lsvContenido.Items[lsvContenido.Items.Count - 1].SubItems.Add(campos[3]);
+                        lsvContenido.Items[lsvContenido.Items.Count - 1].SubItems.Add(campos[4]);
+                        lsvContenido.Items[lsvContenido.Items.Count - 1].SubItems.Add(campos[5]);
+                        lsvContenido.Items[lsvContenido.Items.Count - 1].SubItems.Add(campos[6]);
+                        lsvContenido.Items[lsvContenido.Items.Count - 1].SubItems.Add(campos[7]);
+
+                        encontrado = true;
+                        lectura.Close();
+                        MessageBox.Show("Se ha encontrado el usuario con el numero de cedula : " + txtcedula.Text + "Guardar");
+                    }
+                    else
+                    {
+                        cadena = lectura.ReadLine();
+                    }
+                }
+                if (encontrado == false)
+                {
+                    MessageBox.Show("No se ha encontrado el usuario con el numero de cedula :  " + txtcedula.Text);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se ha encontrado el usuario con el numero de cedula : " + txtcedula.Text + ex.Message, "Guardar",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
